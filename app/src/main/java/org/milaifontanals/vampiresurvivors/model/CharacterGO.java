@@ -24,11 +24,16 @@ public class CharacterGO extends GameObject {
         public Bitmap sprite;
         public int size;
         public int w, h;
+        public int currentFrame = 0;
         public SpriteInfo(@DrawableRes int drawableRes, int size) {
             this.sprite = BitmapFactory.decodeResource(gsv.getResources(), drawableRes);
             this.size = size;
             this.w = sprite.getWidth() / size;
             this.h = sprite.getHeight();
+        }
+
+        public void nextFrame() {
+            currentFrame = (currentFrame + 1) % size;
         }
     }
 
@@ -55,8 +60,8 @@ public class CharacterGO extends GameObject {
         super(gsv);
 
         sprites = new HashMap<>();
-        sprites.put("idle", new SpriteInfo(R.drawable.player_sprite_idle, 1);
-        sprites.put("walk", new SpriteInfo(R.drawable.player_sprite_walk, 3);
+        sprites.put("idle", new SpriteInfo(R.drawable.player_sprite_idle, 1));
+        sprites.put("walk", new SpriteInfo(R.drawable.player_sprite_walk, 3));
         setState("idle");
     }
 
@@ -75,22 +80,14 @@ public class CharacterGO extends GameObject {
 
                 boolean isMovingNext = Math.abs(pJoystick.x) > 0.001 || Math.abs(pJoystick.y) > 0.001;
 
-                if (isMovingNext && !isMoving) {
-                    currentFrame = 1;
-                }
-                if (isMoving) {
-                    cont++;
-                    if (cont == 8) {
-                        currentFrame++;
-                        cont = 0;
-                    }
-                    if (currentFrame >= s.size) {
-                        currentFrame = 2;
-                    }
+                if (isMovingNext) {
+                    setState("walk");
                 } else {
-                    currentFrame = 1;
+                    setState("idle");
                 }
                 isMoving = isMovingNext;
+
+                s.nextFrame();
             }
         }
     }
@@ -101,7 +98,10 @@ public class CharacterGO extends GameObject {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             posPersonatgeScreen = gsv.getScreenCoordinatesPersonatge();
         }
-        canvas.drawBitmap(pjSpriteBmp, new Rect(SPRITE_WIDTH * (currentFrame - 1), 0, SPRITE_WIDTH * currentFrame, SPRITE_HEIGHT), new RectF(posPersonatgeScreen.x - 0.5f * SPRITE_WIDTH * escala, posPersonatgeScreen.y - SPRITE_HEIGHT * 0.5f * escala, posPersonatgeScreen.x + SPRITE_WIDTH * 0.5f * escala, posPersonatgeScreen.y + SPRITE_HEIGHT * 0.5f * escala), null);
+        SpriteInfo s = getCurrentSprite();
+        canvas.drawBitmap(s.sprite,
+                new Rect(s.w * (s.currentFrame - 1), 0, s.w * s.currentFrame, s.h),
+                new RectF(posPersonatgeScreen.x - 0.5f * s.w * escala, posPersonatgeScreen.y - s.h * 0.5f * escala, posPersonatgeScreen.x + s.w * 0.5f * escala, posPersonatgeScreen.y + s.h * 0.5f * escala), null);
     }
 
     public Point getPosPersonatge() {
