@@ -11,27 +11,53 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
 
+import androidx.annotation.DrawableRes;
+
 import org.milaifontanals.vampiresurvivors.R;
 import org.milaifontanals.vampiresurvivors.view.GameSurfaceView;
 
-public class CharacterGO extends GameObject{
+import java.util.HashMap;
+
+public class CharacterGO extends GameObject {
+
+    private class SpriteInfo {
+        public Bitmap sprite;
+        public int size;
+        public int w, h;
+        public SpriteInfo(@DrawableRes int drawableRes, int size) {
+            this.sprite = BitmapFactory.decodeResource(gsv.getResources(), drawableRes);
+            this.size = size;
+            this.w = sprite.getWidth() / size;
+            this.h = sprite.getHeight();
+        }
+    }
 
     Point posPersonatge = new Point(1500, 1500);
 
-    Bitmap pjSpriteBmp;
-    private int SPRITE_WIDTH;
-    private int SPRITE_HEIGHT;
-    private int SPRITE_FRAMES;
+    //Bitmap pjSpriteBmp;
+    private HashMap<String, SpriteInfo> sprites;
+    private String state;
+
     private int currentFrame;
     private int escala = 5;
     private int cont = 0;
     private boolean isMoving;
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public SpriteInfo getCurrentSprite() {
+        return sprites.get(state);
+    }
+
     public CharacterGO(GameSurfaceView gsv) {
         super(gsv);
-        pjSpriteBmp = BitmapFactory.decodeResource(gsv.getResources(), R.drawable.amongus_sprites);
-        SPRITE_FRAMES = 4;
-        SPRITE_WIDTH = pjSpriteBmp.getWidth() / SPRITE_FRAMES;
-        SPRITE_HEIGHT = pjSpriteBmp.getHeight();
+
+        sprites = new HashMap<>();
+        sprites.put("idle", new SpriteInfo(R.drawable.player_sprite_idle, 1);
+        sprites.put("walk", new SpriteInfo(R.drawable.player_sprite_walk, 3);
+        setState("idle");
     }
 
     @Override
@@ -42,8 +68,10 @@ public class CharacterGO extends GameObject{
                 posPersonatge.x += pJoystick.x * 28;
                 posPersonatge.y += pJoystick.y * 28;
 
-                posPersonatge.x = clamp(posPersonatge.x, escala*SPRITE_WIDTH/2, gsv.getW() - SPRITE_WIDTH/2*escala);
-                posPersonatge.y = clamp(posPersonatge.y, escala*SPRITE_HEIGHT/2, gsv.getH() - SPRITE_HEIGHT/2*escala);
+                SpriteInfo s = getCurrentSprite();
+
+                posPersonatge.x = clamp(posPersonatge.x, escala * s.w / 2, gsv.getW() - s.w / 2 * escala);
+                posPersonatge.y = clamp(posPersonatge.y, escala * s.h / 2, gsv.getH() - s.h / 2 * escala);
 
                 boolean isMovingNext = Math.abs(pJoystick.x) > 0.001 || Math.abs(pJoystick.y) > 0.001;
 
@@ -56,7 +84,7 @@ public class CharacterGO extends GameObject{
                         currentFrame++;
                         cont = 0;
                     }
-                    if (currentFrame >= SPRITE_FRAMES) {
+                    if (currentFrame >= s.size) {
                         currentFrame = 2;
                     }
                 } else {
@@ -73,13 +101,7 @@ public class CharacterGO extends GameObject{
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
             posPersonatgeScreen = gsv.getScreenCoordinatesPersonatge();
         }
-        canvas.drawBitmap(pjSpriteBmp,
-                new Rect(SPRITE_WIDTH * (currentFrame - 1), 0, SPRITE_WIDTH * currentFrame, SPRITE_HEIGHT),
-                new RectF(posPersonatgeScreen.x - 0.5f * SPRITE_WIDTH * escala,
-                        posPersonatgeScreen.y - SPRITE_HEIGHT * 0.5f * escala,
-                        posPersonatgeScreen.x + SPRITE_WIDTH * 0.5f * escala,
-                        posPersonatgeScreen.y + SPRITE_HEIGHT * 0.5f * escala),
-                null);
+        canvas.drawBitmap(pjSpriteBmp, new Rect(SPRITE_WIDTH * (currentFrame - 1), 0, SPRITE_WIDTH * currentFrame, SPRITE_HEIGHT), new RectF(posPersonatgeScreen.x - 0.5f * SPRITE_WIDTH * escala, posPersonatgeScreen.y - SPRITE_HEIGHT * 0.5f * escala, posPersonatgeScreen.x + SPRITE_WIDTH * 0.5f * escala, posPersonatgeScreen.y + SPRITE_HEIGHT * 0.5f * escala), null);
     }
 
     public Point getPosPersonatge() {
