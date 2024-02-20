@@ -19,16 +19,18 @@ public class CharacterGO extends SpriteGO {
     }
 
     @Override
+    public PointF getDirection() {
+        return gsv.getJoystickDirection();
+    }
+
+    @Override
     public int getEscala() {
         return 5;
     }
 
     public void update() {
         super.update();
-        PointF pJoystick = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            pJoystick = gsv.getJoystickDirection();
-        }
+        PointF pJoystick = gsv.getJoystickDirection();
         if (pJoystick != null) {
             position.x += pJoystick.x * 28;
             position.y += pJoystick.y * 28;

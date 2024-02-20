@@ -14,12 +14,18 @@ import org.milaifontanals.vampiresurvivors.view.Utils;
 
 public class BatGO extends SpriteGO {
 
-    public BatGO(GameSurfaceView gsv) {
+    public BatGO(GameSurfaceView gsv, Point position) {
         super(gsv);
 
         sprites.put("fly", new SpriteInfo(R.drawable.bat_sheet, 9));
         setState("fly");
-        position = new Point(100,100);
+        this.position = position;
+    }
+
+    @Override
+    public PointF getDirection() {
+        Point characterPosition = gsv.getCharacterPosition();
+        return new PointF(characterPosition.x - position.x, characterPosition.y - position.y);
     }
 
     @Override

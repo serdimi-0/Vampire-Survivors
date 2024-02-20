@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
@@ -27,6 +28,8 @@ public abstract class SpriteGO extends GameObject {
         sprites = new HashMap<>();
     }
 
+    public abstract PointF getDirection();
+
     public void setState(String state) {
         this.state = state;
     }
@@ -47,13 +50,20 @@ public abstract class SpriteGO extends GameObject {
     public void paint(Canvas canvas) {
         Point posScreen = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            posScreen = gsv.getScreenCoordinatesPersonatge(getPosition().x, getPosition().y);
+            posScreen = gsv.getScreenCoordinates(getPosition().x, getPosition().y);
         }
         SpriteInfo s = getCurrentSprite();
         int escala = getEscala();
+        // Voltear sprite del personaje en el eje x
+        canvas.save();
+        if (getDirection().x < 0) {
+            canvas.scale(-1, 1, posScreen.x, posScreen.y);
+        }
         canvas.drawBitmap(s.sprite,
                 new Rect(s.w * (s.currentFrame), 0, s.w * (s.currentFrame + 1), s.h),
                 new RectF(posScreen.x - 0.5f * s.w * escala, posScreen.y - s.h * 0.5f * escala, posScreen.x + s.w * 0.5f * escala, posScreen.y + s.h * 0.5f * escala), null);
+
+        canvas.restore();
     }
 
     public Point getPosition() {

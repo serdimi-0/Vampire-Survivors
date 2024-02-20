@@ -55,6 +55,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
 
+    public int getw() {
+        return w;
+    }
+
+    public int geth() {
+        return h;
+    }
+
+
+
     public GameSurfaceView(Context context) {
         this(context, null);
     }
@@ -73,7 +83,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         character = new CharacterGO(this);
 
         gameObjects.add(character);
-        gameObjects.add(new BatGO(this));
+        gameObjects.add(new BatGO(this, new Point(100,100)));
+        gameObjects.add(new BatGO(this, new Point(300,300)));
+        gameObjects.add(new BatGO(this, new Point(600,600)));
+        gameObjects.add(new BatGO(this, new Point(1200,1200)));
+        gameObjects.add(new BatGO(this, new Point(1500,1500)));
 
 
         /*  Comunismo
@@ -109,7 +123,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return coordCorner;
     }
 
-    public Point getScreenCoordinatesPersonatge(int x, int y) {
+    public Point getScreenCoordinates(int x, int y) {
         Point coordCorner = new Point();
         Point screenCorner = getScreenCoordinates();
 
