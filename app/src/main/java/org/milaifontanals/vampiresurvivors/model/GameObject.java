@@ -1,6 +1,7 @@
 package org.milaifontanals.vampiresurvivors.model;
 
 import android.graphics.Canvas;
+import android.graphics.RectF;
 
 import org.milaifontanals.vampiresurvivors.view.GameSurfaceView;
 
@@ -13,4 +14,5 @@ public abstract class GameObject {
     }
     public abstract void update();
     public abstract void paint(Canvas canvas);
+    public abstract RectF getHitBox();
 }

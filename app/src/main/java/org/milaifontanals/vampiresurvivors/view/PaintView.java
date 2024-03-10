@@ -49,10 +49,10 @@ public class PaintView extends View {
         canvas.drawBitmap(bmpCover, src, dst, new Paint());*/
 
         Paint p = new Paint();
-        p.setColor(Color.RED);
+        /*p.setColor(Color.RED);
         p.setStyle(Paint.Style.FILL);
         canvas.drawPaint(p);
-
+*/
 
         Paint pLine = new Paint();
         pLine.setColor(Color.RED);

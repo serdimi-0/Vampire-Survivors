@@ -12,7 +12,7 @@ import org.milaifontanals.vampiresurvivors.R;
 import org.milaifontanals.vampiresurvivors.view.GameSurfaceView;
 import org.milaifontanals.vampiresurvivors.view.Utils;
 
-public class BatGO extends SpriteGO {
+public class BatGO extends SpriteGO implements Enemy {
 
     public BatGO(GameSurfaceView gsv, Point position) {
         super(gsv);
@@ -33,7 +33,6 @@ public class BatGO extends SpriteGO {
         return 7;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     public void update() {
         super.update();
 
@@ -52,11 +51,10 @@ public class BatGO extends SpriteGO {
         position.x += vector.x * 10;
         position.y += vector.y * 10;
 
-
-        /*SpriteInfo s = getCurrentSprite();
-        int escala = getEscala();
-        */
-
     }
 
+    @Override
+    public float getDamage() {
+        return 0.2f;
+    }
 }

@@ -10,6 +10,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.DrawableRes;
 
@@ -22,6 +23,8 @@ public abstract class SpriteGO extends GameObject {
     protected Point position = new Point(1500, 1500);
     protected String state;
     protected int fCounter = 0;
+    private float lastSeenX;
+    private RectF hitbox;
 
     public SpriteGO(GameSurfaceView gsv) {
         super(gsv);
@@ -48,22 +51,31 @@ public abstract class SpriteGO extends GameObject {
 
     @Override
     public void paint(Canvas canvas) {
-        Point posScreen = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            posScreen = gsv.getScreenCoordinates(getPosition().x, getPosition().y);
-        }
+        Point posScreen = gsv.getScreenCoordinates(getPosition().x, getPosition().y);
         SpriteInfo s = getCurrentSprite();
         int escala = getEscala();
         // Voltear sprite del personaje en el eje x
         canvas.save();
-        if (getDirection().x < 0) {
+        float x = getDirection().x;
+        if (x == 0) {
+            x = lastSeenX;
+        }
+        if (x < 0) {
+            lastSeenX = x;
+        }
+        if (x < 0) {
             canvas.scale(-1, 1, posScreen.x, posScreen.y);
         }
+        hitbox = new RectF(posScreen.x - 0.5f * s.w * escala, posScreen.y - s.h * 0.5f * escala, posScreen.x + s.w * 0.5f * escala, posScreen.y + s.h * 0.5f * escala);
         canvas.drawBitmap(s.sprite,
                 new Rect(s.w * (s.currentFrame), 0, s.w * (s.currentFrame + 1), s.h),
-                new RectF(posScreen.x - 0.5f * s.w * escala, posScreen.y - s.h * 0.5f * escala, posScreen.x + s.w * 0.5f * escala, posScreen.y + s.h * 0.5f * escala), null);
+                hitbox, null);
 
         canvas.restore();
+    }
+
+    public RectF getHitBox() {
+        return hitbox;
     }
 
     public Point getPosition() {
@@ -90,5 +102,6 @@ public abstract class SpriteGO extends GameObject {
                 fCounter = 0;
             }
         }
+
     }
 }

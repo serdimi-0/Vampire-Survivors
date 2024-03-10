@@ -63,7 +63,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return h;
     }
 
-
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
 
     public GameSurfaceView(Context context) {
         this(context, null);
@@ -173,5 +175,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 g.update();
             }
         }
+    }
+
+    public void gameOver() {
+        gameThread.gameOver();
     }
 }

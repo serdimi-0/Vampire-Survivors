@@ -2,17 +2,29 @@ package org.milaifontanals.vampiresurvivors.model;
 
 import static androidx.core.math.MathUtils.clamp;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.os.Build;
+import android.util.Log;
 
 import org.milaifontanals.vampiresurvivors.R;
 import org.milaifontanals.vampiresurvivors.view.GameSurfaceView;
 
 public class CharacterGO extends SpriteGO {
 
+    private float health = 100;
+    Paint paintHealthBarBg = new Paint();
+    Paint paintHealthBar = new Paint();
+
     public CharacterGO(GameSurfaceView gsv) {
         super(gsv);
 
+        position = new Point(2500, 2500);
+        paintHealthBarBg.setARGB(105, 0, 0, 0);
+        paintHealthBar.setARGB(255, 255, 0, 0);
         sprites.put("idle", new SpriteInfo(R.drawable.player_sprite_idle, 1));
         sprites.put("walk", new SpriteInfo(R.drawable.player_sprite_walk, 3));
         setState("idle");
@@ -51,6 +63,32 @@ public class CharacterGO extends SpriteGO {
                 setState("idle");
             }
         }
+
+        for (GameObject go : gsv.getGameObjects()) {
+            if (go instanceof Enemy) {
+                SpriteGO sgo = (SpriteGO) go;
+                if (sgo.getHitBox().intersect(getHitBox())) {
+                    health -= ((Enemy) go).getDamage();
+                }
+            }
+        }
+
+        if(health < 0f){
+            gsv.gameOver();
+        }
     }
 
+    @Override
+    public void paint(Canvas canvas) {
+        super.paint(canvas);
+
+        //Draw the health bar
+        Point screenCoordinates = gsv.getScreenCoordinates(position.x, position.y);
+        Rect rect = new Rect(screenCoordinates.x - 100, screenCoordinates.y + 120, screenCoordinates.x + 100, screenCoordinates.y + 100);
+        canvas.drawRect(rect, paintHealthBarBg);
+
+        rect.right = rect.left + (int) (health/100f * rect.width());
+        canvas.drawRect(screenCoordinates.x - 100, screenCoordinates.y + 120, screenCoordinates.x - 100 + health * 2, screenCoordinates.y + 100, paintHealthBar);
+
+    }
 }
