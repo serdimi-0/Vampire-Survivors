@@ -6,40 +6,72 @@
     android:layout_height="match_parent"
     android:background="#550000"
     android:id="@+id/mainFrame"
+    android:forceDarkAllowed="false"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     tools:context=".MainActivity">
 
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         android:alpha=".7"
         android:src="@drawable/intro_bg"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <org.milaifontanals.vampiresurvivors.view.PaintView
+        android:id="@+id/paintView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha=".1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <ImageView
+        android:id="@+id/imvVamp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:scaleType="fitEnd"
+        android:src="@drawable/cover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/paintView"
+        app:layout_constraintStart_toStartOf="@+id/paintView" />
+
     <ImageView
         android:id="@+id/imvSurvivors"
+        android:layout_marginTop="-200dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/title_survivors"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imvVampire" />
+
+
 
     <ImageView
         android:id="@+id/imvVampire"
+        android:layout_marginTop="-600dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/title_vampire"
-        app:layout_constraintBottom_toTopOf="@+id/imvSurvivors"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/bat1"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_marginStart="-200dp"
         android:src="@drawable/bat_animated_sprite"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -47,6 +79,7 @@
         android:id="@+id/bat2"
         android:layout_width="200dp"
         android:layout_height="200dp"
+        android:layout_marginStart="-200dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/bat_animated_sprite2"/>
@@ -54,6 +87,7 @@
         android:id="@+id/bat3"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginStart="-200dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/bat_animated_sprite3"/>
@@ -61,6 +95,7 @@
         android:id="@+id/bat4"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginStart="-200dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/bat_animated_sprite4"/>
@@ -69,21 +104,22 @@
         android:id="@+id/bat5"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginStart="-200dp"
         android:src="@drawable/bat_animated_sprite5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <org.milaifontanals.vampiresurvivors.view.PaintView
-        android:id="@+id/paintView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".1"
+    <ImageButton
+        android:id="@+id/btn"
+        android:alpha="0"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:backgroundTint="@color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/playbtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintStart_toStartOf="@+id/paintView"
+        app:layout_constraintTop_toTopOf="@+id/paintView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

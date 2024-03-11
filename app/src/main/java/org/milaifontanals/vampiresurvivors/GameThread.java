@@ -8,7 +8,7 @@ public class GameThread extends Thread {
 
     private GameSurfaceView gsv;
     private boolean isGameOver = false;
-    private static final long sleepTime = 1000000000 / 60;
+    private static final long sleepTime = 1000000000 / 30;
 
     public GameThread(GameSurfaceView gameSurfaceView) {
         gsv = gameSurfaceView;

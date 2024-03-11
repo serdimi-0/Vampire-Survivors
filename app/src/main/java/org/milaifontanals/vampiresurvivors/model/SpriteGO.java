@@ -23,6 +23,7 @@ public abstract class SpriteGO extends GameObject {
     protected Point position = new Point(1500, 1500);
     protected String state;
     protected int fCounter = 0;
+    protected int frequency = 4;
     private float lastSeenX;
     private RectF hitbox;
 
@@ -60,9 +61,7 @@ public abstract class SpriteGO extends GameObject {
         if (x == 0) {
             x = lastSeenX;
         }
-        if (x < 0) {
-            lastSeenX = x;
-        }
+        lastSeenX = x;
         if (x < 0) {
             canvas.scale(-1, 1, posScreen.x, posScreen.y);
         }
@@ -97,7 +96,7 @@ public abstract class SpriteGO extends GameObject {
 
         public void nextFrame() {
             fCounter++;
-            if (fCounter > 4) {
+            if (fCounter > frequency) {
                 currentFrame = (currentFrame + 1) % size;
                 fCounter = 0;
             }

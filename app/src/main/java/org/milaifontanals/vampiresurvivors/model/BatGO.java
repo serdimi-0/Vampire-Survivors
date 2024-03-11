@@ -20,6 +20,7 @@ public class BatGO extends SpriteGO implements Enemy {
         sprites.put("fly", new SpriteInfo(R.drawable.bat_sheet, 9));
         setState("fly");
         this.position = position;
+        this.frequency = 1;
     }
 
     @Override
@@ -40,10 +41,10 @@ public class BatGO extends SpriteGO implements Enemy {
 
         characterPosition = gsv.getCharacterPosition();
         PointF vector = new PointF(characterPosition.x - position.x, characterPosition.y - position.y);
-        double distance = Utils.getDistance(position,characterPosition);
+        double distance = Utils.getDistance(position, characterPosition);
 
         // Normalitzem el vector
-        if(distance > 0){
+        if (distance > 0) {
             vector.x /= distance;
             vector.y /= distance;
         }
@@ -57,4 +58,5 @@ public class BatGO extends SpriteGO implements Enemy {
     public float getDamage() {
         return 0.2f;
     }
+
 }

@@ -2,6 +2,7 @@ package org.milaifontanals.vampiresurvivors.view;
 
 import static androidx.core.math.MathUtils.clamp;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -19,7 +21,9 @@ import androidx.annotation.RequiresApi;
 
 import org.milaifontanals.vampiresurvivors.GameThread;
 import org.milaifontanals.vampiresurvivors.MapGenerator;
+import org.milaifontanals.vampiresurvivors.R;
 import org.milaifontanals.vampiresurvivors.model.BatGO;
+import org.milaifontanals.vampiresurvivors.model.BullGO;
 import org.milaifontanals.vampiresurvivors.model.CharacterGO;
 import org.milaifontanals.vampiresurvivors.model.GameObject;
 
@@ -29,9 +33,13 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.Q)
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private GameThread gameThread;
+    public GameThread gameThread;
 
+    public interface GameOverInterface {
+        public void action();
+    }
 
+    public GameOverInterface goi;
     Paint paint = new Paint();
     Paint pBackground = new Paint();
     Paint pLine = new Paint();
@@ -52,7 +60,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public int getH() {
         return H;
     }
-
 
 
     public int getw() {
@@ -85,28 +92,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         character = new CharacterGO(this);
 
         gameObjects.add(character);
-        gameObjects.add(new BatGO(this, new Point(100,100)));
-        gameObjects.add(new BatGO(this, new Point(300,300)));
-        gameObjects.add(new BatGO(this, new Point(600,600)));
-        gameObjects.add(new BatGO(this, new Point(1200,1200)));
-        gameObjects.add(new BatGO(this, new Point(1500,1500)));
-
-
-        /*  Comunismo
-        pLine.setColor(Color.RED);
-        pLine.setStrokeWidth(3);
-        pLine.setStyle(Paint.Style.STROKE);
-
-
-        pLine.setColor(Color.YELLOW);
-        pLine.setStrokeWidth(40);
-        path.moveTo(500, 500);
-        path.cubicTo(500, 500, 1400, 1000, 300, 1000);
-        path.lineTo(150, 1200);
-        path.moveTo(400, 500);
-        path.lineTo(200, 600);
-        path.moveTo(300, 550);
-        path.lineTo(800, 1200);*/
+        gameObjects.add(new BatGO(this, new Point(100, 100)));
+        gameObjects.add(new BatGO(this, new Point(300, 300)));
+        gameObjects.add(new BatGO(this, new Point(600, 600)));
+        gameObjects.add(new BatGO(this, new Point(1200, 1200)));
+        gameObjects.add(new BatGO(this, new Point(1500, 1500)));
+        gameObjects.add(new BullGO(this, new Point(2800, 1800)));
 
     }
 
@@ -160,7 +151,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         canvas.drawBitmap(map.getScenario(), new Rect(screenCorner.x, screenCorner.y, screenCorner.x + w, screenCorner.y + h), new Rect(0, 0, w, h), null);
 
-        for(GameObject g : gameObjects){
+        for (GameObject g : gameObjects) {
             g.paint(canvas);
         }
     }
@@ -171,13 +162,20 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public void update() {
         if (joystick != null) {
-            for(GameObject g : gameObjects){
+            for (GameObject g : gameObjects) {
                 g.update();
             }
         }
+        /*SHow the pixel of the terrain the character is stepping on in the log*/
+        Log.d("Terrain", "Terrain: " + map.getScenario().getPixel(character.getPosition().x, character.getPosition().y));
     }
 
     public void gameOver() {
-        gameThread.gameOver();
+
+        /*gameThread.gameOver();*/
+        goi.action();
+    }
+
+    public void restart(){
     }
 }

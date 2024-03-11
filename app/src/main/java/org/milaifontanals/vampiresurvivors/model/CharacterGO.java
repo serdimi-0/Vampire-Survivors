@@ -25,8 +25,8 @@ public class CharacterGO extends SpriteGO {
         position = new Point(2500, 2500);
         paintHealthBarBg.setARGB(105, 0, 0, 0);
         paintHealthBar.setARGB(255, 255, 0, 0);
-        sprites.put("idle", new SpriteInfo(R.drawable.player_sprite_idle, 1));
-        sprites.put("walk", new SpriteInfo(R.drawable.player_sprite_walk, 3));
+        sprites.put("idle", new SpriteInfo(R.drawable.character_sprite_idle, 1));
+        sprites.put("walk", new SpriteInfo(R.drawable.character_sprites_walk, 3));
         setState("idle");
     }
 
@@ -82,7 +82,6 @@ public class CharacterGO extends SpriteGO {
     public void paint(Canvas canvas) {
         super.paint(canvas);
 
-        //Draw the health bar
         Point screenCoordinates = gsv.getScreenCoordinates(position.x, position.y);
         Rect rect = new Rect(screenCoordinates.x - 100, screenCoordinates.y + 120, screenCoordinates.x + 100, screenCoordinates.y + 100);
         canvas.drawRect(rect, paintHealthBarBg);

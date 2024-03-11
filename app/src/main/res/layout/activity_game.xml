@@ -6,11 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+
     <org.milaifontanals.vampiresurvivors.view.GameSurfaceView
         android:id="@+id/gsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    <ImageView
+        android:id="@+id/deadScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/dead_screen"
+        android:alpha="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <org.milaifontanals.vampiresurvivors.view.JoystickView
         android:id="@+id/joystick"
@@ -19,4 +31,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/gsv" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
