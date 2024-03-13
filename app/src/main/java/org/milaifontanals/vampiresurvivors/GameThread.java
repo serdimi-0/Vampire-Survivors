@@ -44,4 +44,8 @@ public class GameThread extends Thread {
     public void gameOver(){
         isGameOver = true;
     }
+    public boolean isGameOver(){
+        return isGameOver;
+    }
+
 }

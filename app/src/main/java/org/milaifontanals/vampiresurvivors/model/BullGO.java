@@ -15,23 +15,18 @@ public class BullGO extends SpriteGO implements Enemy {
         sprites.put("walk", new SpriteInfo(R.drawable.bull_sheet, 3));
         setState("walk");
         this.position = position;
+        this.health = 300;
         direction = new PointF((float) (Math.random() * 2 - 1), (float) (Math.random() * 2 - 1));
     }
 
     @Override
     public float getDamage() {
-        return 0.5f;
+        return 1f;
     }
 
     @Override
     public void update() {
         super.update();
-        /*Direction can take 4 values:
-        * x=1,y=1
-        * x=1,y=-1
-        * x=-1,y=-1
-        * x=-1,y=1
-        * there's a small chance the direction changes every update*/
         if (Math.random() < 0.01) {
             direction = new PointF((float) (Math.random() * 2 - 1), (float) (Math.random() * 2 - 1));
         }
@@ -61,7 +56,7 @@ public class BullGO extends SpriteGO implements Enemy {
 
     @Override
     public int getEscala() {
-        return 7;
+        return 14;
     }
 
     @Override

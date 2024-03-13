@@ -21,6 +21,7 @@ public class BatGO extends SpriteGO implements Enemy {
         setState("fly");
         this.position = position;
         this.frequency = 1;
+        this.health = 100;
     }
 
     @Override
@@ -49,8 +50,8 @@ public class BatGO extends SpriteGO implements Enemy {
             vector.y /= distance;
         }
 
-        position.x += vector.x * 10;
-        position.y += vector.y * 10;
+        position.x += vector.x * 13;
+        position.y += vector.y * 13;
 
     }
 

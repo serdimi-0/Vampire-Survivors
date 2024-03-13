@@ -26,6 +26,15 @@ public abstract class SpriteGO extends GameObject {
     protected int frequency = 4;
     private float lastSeenX;
     private RectF hitbox;
+    protected int health;
+
+
+    public int getHealth() {
+        return health;
+    }
+    public void reduceHealth(int damage) {
+        health -= damage;
+    }
 
     public SpriteGO(GameSurfaceView gsv) {
         super(gsv);
@@ -55,8 +64,12 @@ public abstract class SpriteGO extends GameObject {
         Point posScreen = gsv.getScreenCoordinates(getPosition().x, getPosition().y);
         SpriteInfo s = getCurrentSprite();
         int escala = getEscala();
-        // Voltear sprite del personaje en el eje x
         canvas.save();
+
+        if(this instanceof GrenadeGO){
+            canvas.rotate((float) Math.toDegrees(Math.atan2(getDirection().y, getDirection().x))-90, posScreen.x, posScreen.y);
+        }
+
         float x = getDirection().x;
         if (x == 0) {
             x = lastSeenX;
@@ -102,5 +115,13 @@ public abstract class SpriteGO extends GameObject {
             }
         }
 
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 }

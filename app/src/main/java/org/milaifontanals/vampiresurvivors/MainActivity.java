@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity implements ViewTreeObserver.
     private MediaPlayer mediaPlayerPlay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mainFrame = findViewById(R.id.mainFrame);
@@ -31,9 +30,9 @@ public class MainActivity extends AppCompatActivity implements ViewTreeObserver.
         findViewById(R.id.btn).setOnClickListener(e -> {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
+            mediaPlayer.release();
             mediaPlayerPlay.start();
             mediaPlayer.stop();
-            mediaPlayer.release();
             finish();
         });
 
