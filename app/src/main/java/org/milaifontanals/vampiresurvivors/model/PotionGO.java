@@ -2,6 +2,7 @@ package org.milaifontanals.vampiresurvivors.model;
 
 import android.graphics.Point;
 import android.graphics.PointF;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import org.milaifontanals.vampiresurvivors.R;
@@ -11,6 +12,7 @@ public class PotionGO extends SpriteGO {
 
     PointF direction;
     CharacterGO character;
+    MediaPlayer potionSound;
 
     public PotionGO(GameSurfaceView gsv, Point position, CharacterGO character) {
         super(gsv);
@@ -19,6 +21,7 @@ public class PotionGO extends SpriteGO {
         direction = new PointF(0, 0);
         this.character = character;
         this.position = position;
+        potionSound = MediaPlayer.create(gsv.getContext(), R.raw.potion);
     }
 
     @Override
@@ -35,6 +38,7 @@ public class PotionGO extends SpriteGO {
     public void update() {
         super.update();
         if (character.getHitBox().intersect(this.getHitBox())){
+            potionSound.start();
             character.health += 20;
             if (character.health > 100) {
                 character.health = 100;

@@ -4,6 +4,7 @@ import static androidx.core.math.MathUtils.clamp;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -70,6 +71,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     GrenadeGO grenade;
     AreaWeaponGO areaWeapon;
 
+    MediaPlayer bombSound;
+
 
     private CopyOnWriteArrayList<GameObject> gameObjects = new CopyOnWriteArrayList<>();
     public void setAttack2FrameCounter(int attack2FrameCounter) {
@@ -133,6 +136,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
         gameObjects.add(new AreaWeaponItemGO(this, new Point(200, 200), character));
+
+        bombSound = MediaPlayer.create(context, R.raw.bomb);
     }
 
     public Point getCharacterPosition() {
@@ -231,6 +236,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     RectF grenadeHitBox = grenade.getHitBox();
                     RectF sHitBox = s.getHitBox();
                     if (grenadeHitBox != null && sHitBox != null && grenadeHitBox.intersect(sHitBox)) {
+                        bombSound.start();
                         s.reduceHealth(100);
                         if (s.getHealth() <= 0) {
                             gameObjects.remove(g);
@@ -263,14 +269,24 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
 
-        if (character.getHealth() <= 0 && !gameThread.isGameOver()) {
+        if (character.getHealth() <= 0) {
             gameOver();
         }
 
     }
 
     public void gameOver() {
+        gameThread.gameOver();
         goi.action();
+        MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.death);
+        mediaPlayer.start();
+        try {
+            Thread.sleep(12000);
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            getContext().startActivity(intent);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public SpriteGO closestEnemy(Point p) {

@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.util.Log;
 
@@ -21,6 +22,7 @@ public class CharacterGO extends SpriteGO {
     Paint paintHealthBarBg = new Paint();
     Paint paintHealthBar = new Paint();
     private Bitmap mapBitmap = BitmapFactory.decodeResource(gsv.getResources(), R.drawable.map_mini);
+    private MediaPlayer tick;
 
     public CharacterGO(GameSurfaceView gsv) {
         super(gsv);
@@ -31,6 +33,7 @@ public class CharacterGO extends SpriteGO {
         sprites.put("idle", new SpriteInfo(R.drawable.character_sprite_idle, 1));
         sprites.put("walk", new SpriteInfo(R.drawable.character_sprites_walk, 3));
         setState("idle");
+        tick = MediaPlayer.create(gsv.getContext(), R.raw.tick);
     }
 
     @Override
@@ -89,6 +92,7 @@ public class CharacterGO extends SpriteGO {
             if (go instanceof Enemy) {
                 SpriteGO sgo = (SpriteGO) go;
                 if (sgo.getHitBox().intersect(getHitBox())) {
+                    tick.start();
                     health -= ((Enemy) go).getDamage();
                 }
             }
